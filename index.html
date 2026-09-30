@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vhyn — Portfolio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            --linear-ease: linear(0, 0.068, 0.19 2.7%, 0.804 8.1%, 1.037, 1.199 13.2%, 1.245, 1.27 15.8%, 1.274, 1.272 17.4%, 1.249 19.1%, 0.996 28%, 0.949, 0.928 33.3%, 0.926, 0.933 36.8%, 1.001 45.6%, 1.013, 1.019 50.8%, 1.018 54.4%, 1 63.1%, 0.995 68%, 1.001 85%, 1);
+            
+            --bg-main: #030104;
+            --c-text-main: #ffffff;
+            --c-text-sub: #d1d5db;
+            --c-card-bg: linear-gradient(145deg, rgba(18, 7, 10, 0.85), rgba(8, 3, 5, 0.95));
+            --c-card-border: rgba(255, 255, 255, 0.15);
+            --c-glass: #bbbbbc;
+            --c-light: #fff;
+            --c-dark: #000;
+            --glass-reflex-dark: 1.5;
+            --glass-reflex-light: 0.12;
+            --saturation: 180%;
+            --accent-glow: rgba(220, 38, 38, 0.2);
+            --accent-color: #ef4444;
+            --blend-mode: screen;
+        }
+
+        [data-theme="light"] {
+            --bg-main: #f1f5f9;
+            --c-text-main: #020617;
+            --c-text-sub: #1e293b;
+            --c-card-bg: #ffffff;
+            --c-card-border: rgba(0, 0, 0, 0.12);
+            --c-glass: #ffffff;
+            --glass-reflex-light: 0.05;
+            --glass-reflex-dark: 0.2;
+            --accent-glow: rgba(220, 38, 38, 0.12);
+            --accent-color: #dc2626;
+            --blend-mode: multiply;
+        }
+
+        [data-theme="dim"] {
+            --bg-main: #090d16;
+            --c-text-main: #ffffff;
+            --c-text-sub: #cbd5e1;
+            --c-card-bg: linear-gradient(145deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.95));
+            --c-card-border: rgba(56, 189, 248, 0.25);
+            --c-glass: #38bdf8;
+            --glass-reflex-light: 0.1;
+            --accent-glow: rgba(56, 189, 248, 0.2);
+            --accent-color: #38bdf8;
+            --blend-mode: screen;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--c-text-main);
+            transition: background-color 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+        }
+
+        .liquidGlass-wrapper {
+            position: relative;
+            border-radius: 99em;
+            background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
+            backdrop-filter: blur(14px) url(#glass-distortion) saturate(var(--saturation));
+            -webkit-backdrop-filter: blur(14px) saturate(var(--saturation));
+            box-shadow: 
+                inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
+                inset 1px 1px 0px 0px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 40%), transparent), 
+                0px 4px 16px 0px color-mix(in srgb, var(--c-dark) 20%, transparent);
+            transition: all 400ms ease;
+        }
+
+        nav.liquid-nav {
+            display: flex;
+            align-items: center;
+            position: relative;
+            background: rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(14px) saturate(180%);
+            -webkit-backdrop-filter: blur(14px) saturate(180%);
+            border-radius: 100vw;
+            padding: 0.25em 0.35em;
+            border: 1px solid var(--c-card-border);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        nav.liquid-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        [data-theme="light"] nav.liquid-nav {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        nav.liquid-nav ul {
+            display: flex;
+            align-items: center;
+            gap: 0.35em;
+            list-style: none;
+            padding: 0 0.15em;
+            margin: 0;
+            position: relative;
+            z-index: 3;
+            white-space: nowrap;
+        }
+
+        nav.liquid-nav ul li {
+            padding: 0.4em 0.75em;
+            border-radius: 100vw;
+            position: relative;
+            transition: all 0.3s ease;
+            color: var(--c-text-sub);
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        [data-theme="light"] nav.liquid-nav ul li {
+            text-shadow: none;
+        }
+
+        nav.liquid-nav ul li.active {
+            color: #ffffff !important;
+            background: var(--accent-color);
+            box-shadow: 0 2px 10px color-mix(in srgb, var(--accent-color) 40%, transparent);
+        }
+
+        .effect {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 0px;
+            height: 0px;
+            pointer-events: none;
+            display: grid;
+            place-items: center;
+            z-index: 60;
+        }
+
+        .effect.filter {
+            filter: blur(5px) contrast(15);
+            mix-blend-mode: var(--blend-mode);
+            position: absolute;
+        }
+
+        .effect.filter::after {
+            content: "";
+            position: absolute;
+            inset: 0px;
+            background: var(--accent-color);
+            scale: 0;
+            opacity: 0;
+            z-index: -1;
+            border-radius: 100vw;
+        }
+
+        .effect.active::after {
+            animation: pill 1.8s var(--linear-ease) 0.2s both;
+        }
+
+        .particles {
+            position: absolute;
+            inset: 0;
+        }
+
+        .particle {
+            --time: 2.2s;
+            opacity: 0;
+            position: absolute;
+            top: calc(50% - 8px);
+            left: calc(50% - 8px);
+            animation: particle calc(var(--time)) ease 1 -350ms;
+        }
+
+        .point {
+            width: 16px;
+            height: 16px;
+            border-radius: 100%;
+            background: var(--accent-color);
+            opacity: 1;
+            animation: point calc(var(--time)) ease 1 -350ms;
+        }
+
+        @keyframes particle {
+            0% { transform: rotate(0deg) translate(calc(var(--start-x) * 1), calc(var(--start-y) * 1)); opacity: 1; }
+            70% { transform: rotate(calc(var(--rotate) * 0.5)) translate(calc(var(--end-x) * 1.2), calc(var(--end-y) * 1.2)); opacity: 1; }
+            100% { transform: rotate(calc(var(--rotate) * 1.2)) translate(calc(var(--end-x) * 0.5), calc(var(--end-y) * 0.5)); opacity: 1; }
+        }
+
+        @keyframes point {
+            0% { scale: 0; opacity: 0; }
+            25% { scale: calc(var(--scale) * 0.25); }
+            38% { opacity: 1; }
+            65% { scale: var(--scale); opacity: 1; }
+            100% { scale: 0; opacity: 0; }
+        }
+
+        @keyframes pill {
+            to { scale: 1; opacity: 1; }
+        }
+
+        .glass-card {
+            background: var(--c-card-bg);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border: 1px solid var(--c-card-border);
+            box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.2);
+            border-radius: 24px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+        }
+
+        .glow-ambient {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, rgba(0,0,0,0) 70%);
+            filter: blur(100px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        #sidebar-overlay { transition: opacity 0.3s ease; }
+        #sidebar-panel { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--bg-main); }
+        ::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 3px; }
+    </style>
+</head>
+<body class="relative min-h-screen">
+
+    <!-- SVG Glass Distortion Filter -->
+    <svg style="display: none">
+        <filter id="glass-distortion" x="0%" y="0%" width="100%" height="100%" filterUnits="objectBoundingBox">
+            <feTurbulence type="fractalNoise" baseFrequency="0.01 0.01" numOctaves="1" seed="5" result="turbulence" />
+            <feComponentTransfer in="turbulence" result="mapped">
+                <feFuncR type="gamma" amplitude="1" exponent="10" offset="0.5" />
+                <feFuncG type="gamma" amplitude="0" exponent="1" offset="0" />
+                <feFuncB type="gamma" amplitude="0" exponent="1" offset="0.5" />
+            </feComponentTransfer>
+            <feGaussianBlur in="turbulence" stdDeviation="3" result="softMap" />
+            <feSpecularLighting in="softMap" surfaceScale="5" specularConstant="1" specularExponent="100" lighting-color="white" result="specLight">
+                <fePointLight x="-200" y="-200" z="300" />
+            </feSpecularLighting>
+            <feComposite in="specLight" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="litImage" />
+            <feDisplacementMap in="SourceGraphic" in2="softMap" scale="150" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+    </svg>
+
+    <!-- Ambient Lights -->
+    <div class="glow-ambient top-0 left-10"></div>
+    <div class="glow-ambient bottom-10 right-10"></div>
+
+    <!-- NAVIGATION BAR -->
+    <header class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[96%] max-w-2xl">
+        <div class="liquidGlass-wrapper px-3 py-1.5 flex items-center justify-between gap-1.5">
+            
+            <!-- Logo & Hamburger Menu (Nama VHYN Tetap Tampil) -->
+            <div class="flex items-center gap-1.5 shrink-0">
+                <button onclick="toggleSidebar(true)" class="w-8 h-8 rounded-full liquidGlass-wrapper flex items-center justify-center transition hover:scale-105" style="color: var(--c-text-main);">
+                    <i data-lucide="menu" class="w-4 h-4" style="color: var(--accent-color);"></i>
+                </button>
+                <span onclick="toggleSidebar(true)" class="font-black text-xs tracking-widest uppercase cursor-pointer pr-1" style="color: var(--c-text-main);">VHYN</span>
+            </div>
+
+            <!-- Nav Items -->
+            <nav class="liquid-nav shrink min-w-0">
+                <ul id="nav-list">
+                    <li class="active" onclick="triggerLiquidEffect(this, '#hero')">HOME</li>
+                    <li onclick="triggerLiquidEffect(this, '#works')">WORKS</li>
+                </ul>
+            </nav>
+
+            <!-- 3 Theme Switcher -->
+            <nav class="liquid-nav shrink min-w-0">
+                <ul>
+                    <li id="theme-dark" class="active" onclick="setTheme('dark', this)">DARK</li>
+                    <li id="theme-light" onclick="setTheme('light', this)">LIGHT</li>
+                    <li id="theme-dim" onclick="setTheme('dim', this)">DIM</li>
+                </ul>
+            </nav>
+
+        </div>
+    </header>
+
+    <div id="effect-container"></div>
+
+    <!-- SIDEBAR TASKBAR (KIRI) -->
+    <div id="sidebar-overlay" onclick="toggleSidebar(false)" class="fixed inset-0 bg-black/60 backdrop-blur-md z-50 opacity-0 pointer-events-none"></div>
+    <aside id="sidebar-panel" class="fixed top-0 left-0 bottom-0 w-72 z-50 -translate-x-full p-6 flex flex-col justify-between" style="background: var(--c-card-bg); border-right: 1px solid var(--c-card-border); backdrop-filter: blur(25px);">
+        
+        <div>
+            <!-- Header Sidebar -->
+            <div class="flex items-center justify-between mb-8">
+                <span class="font-black text-lg tracking-widest" style="color: var(--c-text-main);">VHYN</span>
+                <button onclick="toggleSidebar(false)" class="w-8 h-8 rounded-full liquidGlass-wrapper flex items-center justify-center" style="color: var(--c-text-main);">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Commission Badge -->
+            <div class="mb-8 p-3 rounded-xl border flex items-center gap-2.5" style="border-color: var(--c-card-border); background: rgba(255,255,255,0.02);">
+                <span class="relative flex h-2.5 w-2.5">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
+                </span>
+                <span class="text-[11px] font-bold tracking-wider uppercase text-amber-400">COMMISSIONS: SOON</span>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="space-y-2">
+                <button onclick="toggleSidebar(false); scrollToTarget('#hero');" class="w-full text-left px-4 py-3 rounded-xl text-xs font-bold tracking-wider flex items-center gap-3 transition hover:bg-white/5" style="color: var(--c-text-main);">
+                    <i data-lucide="home" class="w-4 h-4" style="color: var(--accent-color);"></i>
+                    <span>HOME</span>
+                </button>
+                <button onclick="toggleSidebar(false); scrollToTarget('#works');" class="w-full text-left px-4 py-3 rounded-xl text-xs font-bold tracking-wider flex items-center gap-3 transition hover:bg-white/5" style="color: var(--c-text-main);">
+                    <i data-lucide="grid" class="w-4 h-4" style="color: var(--accent-color);"></i>
+                    <span>WORKS</span>
+                </button>
+                <button onclick="toggleSidebar(false); openAboutModal();" class="w-full text-left px-4 py-3 rounded-xl text-xs font-bold tracking-wider flex items-center gap-3 transition hover:bg-white/5" style="color: var(--c-text-main);">
+                    <i data-lucide="user" class="w-4 h-4" style="color: var(--accent-color);"></i>
+                    <span>ABOUT & CONTACT</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Footer Sidebar -->
+        <div class="pt-6 border-t" style="border-color: var(--c-card-border);">
+            <a href="https://www.tiktok.com/@lzvhyn" target="_blank" class="flex items-center gap-2.5 text-xs font-semibold" style="color: var(--c-text-sub);">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-2.883 2.893 2.895 2.895 0 0 1-2.896-2.893 2.896 2.896 0 0 1 2.896-2.893c.277 0 .54.041.792.115V9.418a6.326 6.326 0 0 0-.792-.05 6.338 6.338 0 0 0-6.338 6.338 6.338 6.338 0 0 0 6.338 6.338 6.338 6.338 0 0 0 6.338-6.338V8.675a8.21 8.21 0 0 0 4.81 1.528V6.758a4.806 4.806 0 0 1-1.05-.072z"/>
+                </svg>
+                <span>TikTok @lzvhyn</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="relative z-10 min-h-[80vh] flex flex-col items-center justify-center text-center px-6 pt-24 pb-10">
+        <h1 class="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight mb-5 leading-tight" style="color: var(--c-text-main);">
+            Graphic Design.<br>
+            <span style="color: var(--accent-color);">Unbound Vision.</span>
+        </h1>
+
+        <p class="text-xs sm:text-sm max-w-md font-medium leading-relaxed mb-8" style="color: var(--c-text-sub);">
+            Official portfolio showcasing basic, abstract, and grunge graphic artworks created by <strong>Vhyn</strong>.
+        </p>
+
+        <div class="liquidGlass-wrapper inline-block">
+            <a href="#works" onclick="triggerLiquidEffect(this, '#works')" class="px-6 py-3 text-[11px] font-bold tracking-widest flex items-center gap-2.5 group rounded-full" style="color: var(--c-text-main);">
+                <span>EXPLORE ARTWORKS</span>
+                <i data-lucide="arrow-down" class="w-3.5 h-3.5 group-hover:translate-y-0.5 transition"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- PORTFOLIO GALLERY -->
+    <section id="works" class="relative z-10 max-w-7xl mx-auto px-6 py-12">
+        <div class="mb-10 text-center">
+            <h2 class="text-2xl sm:text-4xl font-black mb-2" style="color: var(--c-text-main);">Featured Works</h2>
+            <p class="text-xs font-medium" style="color: var(--c-text-sub);">Click or tap any artwork to view in full resolution.</p>
+        </div>
+
+        <div id="portfolio-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-7">
+            <!-- Dynamic Grid Items -->
+        </div>
+    </section>
+
+    <!-- CREATOR PROFILE & TIKTOK -->
+    <section class="relative z-10 max-w-3xl mx-auto px-6 py-12">
+        <div class="glass-card p-6 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="space-y-2 text-center md:text-left">
+                <span class="text-[10px] font-mono tracking-widest" style="color: var(--accent-color);">CREATIVE STUDIO</span>
+                <h3 class="text-2xl font-extrabold" style="color: var(--c-text-main);">Vhyn</h3>
+                <p class="text-xs max-w-sm font-medium leading-relaxed" style="color: var(--c-text-sub);">
+                    Specialized in basic, abstract, and grunge visual artworks. Stay updated with new releases on TikTok.
+                </p>
+            </div>
+            
+            <div class="liquidGlass-wrapper">
+                <a href="https://www.tiktok.com/@lzvhyn" target="_blank" class="px-5 py-3 text-xs font-bold flex items-center gap-2 hover:scale-105 transition rounded-full" style="color: var(--c-text-main);">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                        <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-2.883 2.893 2.895 2.895 0 0 1-2.896-2.893 2.896 2.896 0 0 1 2.896-2.893c.277 0 .54.041.792.115V9.418a6.326 6.326 0 0 0-.792-.05 6.338 6.338 0 0 0-6.338 6.338 6.338 6.338 0 0 0 6.338 6.338 6.338 6.338 0 0 0 6.338-6.338V8.675a8.21 8.21 0 0 0 4.81 1.528V6.758a4.806 4.806 0 0 1-1.05-.072z"/>
+                    </svg>
+                    <span>FOLLOW ON TIKTOK</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="relative z-10 border-t py-6 text-center text-[11px] font-semibold" style="border-color: var(--c-card-border); color: var(--c-text-sub);">
+        <p>© 2026 Vhyn (@lzvhyn) • All Rights Reserved.</p>
+    </footer>
+
+    <!-- LIGHTBOX MODAL -->
+    <div id="modal-lightbox" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl hidden flex items-center justify-center p-4">
+        <div class="glass-card max-w-4xl w-full p-5 relative flex flex-col items-center">
+            <button onclick="closeModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full liquidGlass-wrapper flex items-center justify-center" style="color: var(--c-text-main);">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+
+            <div class="w-full h-[65vh] flex items-center justify-center overflow-hidden rounded-xl bg-black/40 mb-3 p-2">
+                <img id="modal-image" src="" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl">
+            </div>
+
+            <p class="text-[11px] font-mono font-bold" style="color: var(--accent-color);">Artwork by Vhyn • TikTok @lzvhyn</p>
+        </div>
+    </div>
+
+    <!-- ABOUT & CONTACT MODAL -->
+    <div id="modal-about" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-xl hidden flex items-center justify-center p-4">
+        <div class="glass-card max-w-md w-full p-6 sm:p-8 relative">
+            <button onclick="closeAboutModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full liquidGlass-wrapper flex items-center justify-center" style="color: var(--c-text-main);">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+
+            <div class="text-center space-y-4">
+                <div class="w-16 h-16 rounded-full mx-auto flex items-center justify-center font-black text-xl border" style="border-color: var(--accent-color); background: color-mix(in srgb, var(--accent-color) 15%, transparent); color: var(--c-text-main);">
+                    V
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-extrabold" style="color: var(--c-text-main);">About Me</h3>
+                    <p class="text-xs font-mono font-bold mt-1" style="color: var(--accent-color);">Graphic Designer & Creator</p>
+                </div>
+
+                <p class="text-xs font-medium leading-relaxed text-justify sm:text-center" style="color: var(--c-text-sub);">
+                    I'm Vhyn, a TikTok content creator who creates design. My editing foundation is in graphic design, specifically focusing on abstract grunge style.
+                </p>
+
+                <div class="pt-4 border-t space-y-2.5" style="border-color: var(--c-card-border);">
+                    <span class="text-[10px] font-mono tracking-widest block uppercase font-bold" style="color: var(--c-text-sub);">Connect with me</span>
+                    
+                    <div class="grid grid-cols-2 gap-3">
+                        <a href="https://www.tiktok.com/@lzvhyn" target="_blank" class="p-2.5 rounded-xl border flex items-center justify-center gap-2 text-xs font-bold transition hover:scale-105" style="border-color: var(--c-card-border); color: var(--c-text-main);">
+                            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                                <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-2.883 2.893 2.895 2.895 0 0 1-2.896-2.893 2.896 2.896 0 0 1 2.896-2.893c.277 0 .54.041.792.115V9.418a6.326 6.326 0 0 0-.792-.05 6.338 6.338 0 0 0-6.338 6.338 6.338 6.338 0 0 0 6.338 6.338 6.338 6.338 0 0 0 6.338-6.338V8.675a8.21 8.21 0 0 0 4.81 1.528V6.758a4.806 4.806 0 0 1-1.05-.072z"/>
+                            </svg>
+                            <span>TikTok</span>
+                        </a>
+
+                        <a href="https://t.me/lzvhyn" target="_blank" class="p-2.5 rounded-xl border flex items-center justify-center gap-2 text-xs font-bold transition hover:scale-105" style="border-color: var(--c-card-border); color: var(--c-text-main);">
+                            <i data-lucide="send" class="w-3.5 h-3.5" style="color: var(--accent-color);"></i>
+                            <span>Telegram</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        lucide.createIcons();
+
+        function toggleSidebar(open) {
+            const overlay = document.getElementById('sidebar-overlay');
+            const panel = document.getElementById('sidebar-panel');
+            if(open) {
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                panel.classList.remove('-translate-x-full');
+            } else {
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+                panel.classList.add('-translate-x-full');
+            }
+        }
+
+        function scrollToTarget(selector) {
+            const target = document.querySelector(selector);
+            if(target) target.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function openAboutModal() {
+            document.getElementById('modal-about').classList.remove('hidden');
+        }
+        function closeAboutModal() {
+            document.getElementById('modal-about').classList.add('hidden');
+        }
+
+        function setTheme(theme, element) {
+            document.documentElement.setAttribute('data-theme', theme);
+            const themeButtons = element.parentElement.querySelectorAll('li');
+            themeButtons.forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            triggerLiquidEffect(element);
+        }
+
+        function triggerLiquidEffect(element, targetSelector) {
+            if(element.tagName === 'LI' && element.parentElement.id === 'nav-list') {
+                const items = element.parentElement.querySelectorAll('li');
+                items.forEach(el => el.classList.remove('active'));
+                element.classList.add('active');
+            }
+
+            const rect = element.getBoundingClientRect();
+            const container = document.getElementById('effect-container');
+            
+            const effectEl = document.createElement('div');
+            effectEl.className = 'effect filter active';
+            effectEl.style.left = `${rect.left + rect.width / 2}px`;
+            effectEl.style.top = `${rect.top + rect.height / 2}px`;
+
+            const particlesContainer = document.createElement('div');
+            particlesContainer.className = 'particles';
+
+            for (let i = 0; i < 10; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const angle = (i / 10) * 360;
+                const distance = 35 + Math.random() * 25;
+                const startX = Math.cos(angle * Math.PI / 180) * 8;
+                const startY = Math.sin(angle * Math.PI / 180) * 8;
+                const endX = Math.cos(angle * Math.PI / 180) * distance;
+                const endY = Math.sin(angle * Math.PI / 180) * distance;
+
+                particle.style.setProperty('--start-x', `${startX}px`);
+                particle.style.setProperty('--start-y', `${startY}px`);
+                particle.style.setProperty('--end-x', `${endX}px`);
+                particle.style.setProperty('--end-y', `${endY}px`);
+                particle.style.setProperty('--rotate', `${angle}deg`);
+
+                const point = document.createElement('div');
+                point.className = 'point';
+                point.style.setProperty('--scale', `${0.5 + Math.random() * 0.7}`);
+
+                particle.appendChild(point);
+                particlesContainer.appendChild(particle);
+            }
+
+            effectEl.appendChild(particlesContainer);
+            container.appendChild(effectEl);
+
+            if(targetSelector) {
+                scrollToTarget(targetSelector);
+            }
+
+            setTimeout(() => { effectEl.remove(); }, 2000);
+        }
+
+        const imageSources = [
+            "https://files.catbox.moe/07lwm2.png", "https://files.catbox.moe/g2x6sf.png",
+            "https://files.catbox.moe/3ctthh.png", "https://files.catbox.moe/mm5a57.png",
+            "https://files.catbox.moe/ff9o89.png", "https://files.catbox.moe/xm0b8o.png",
+            "https://files.catbox.moe/qxpcv3.png", "https://files.catbox.moe/oa8que.png",
+            "https://files.catbox.moe/fm6m6d.png", "https://files.catbox.moe/k4hpuf.png",
+            "https://files.catbox.moe/i5nkau.png", "https://files.catbox.moe/2sfip4.png",
+            "https://files.catbox.moe/8efvfx.png", "https://files.catbox.moe/yu28jv.png",
+            "https://files.catbox.moe/zz0i73.png", "https://files.catbox.moe/bybjz6.png",
+            "https://files.catbox.moe/k88ixx.png"
+        ];
+
+        const gridContainer = document.getElementById('portfolio-grid');
+
+        imageSources.forEach((imageUrl, index) => {
+            const card = document.createElement('div');
+            card.className = "glass-card p-3.5 cursor-pointer overflow-hidden flex flex-col justify-between group";
+            card.onclick = () => openModal(imageUrl);
+
+            card.innerHTML = `
+                <div class="w-full h-72 sm:h-88 rounded-xl overflow-hidden mb-3 bg-black/40 relative flex items-center justify-center">
+                    <img src="${imageUrl}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 ease-out" loading="lazy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-3.5">
+                        <span class="text-[11px] font-medium text-white flex items-center gap-1">
+                            <i data-lucide="maximize-2" class="w-3 h-3"></i> View Full Resolution
+                        </span>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between px-1">
+                    <span class="text-[11px] font-mono font-bold" style="color: var(--c-text-sub);">Artwork #${(index + 1).toString().padStart(2, '0')}</span>
+                    <div class="w-7 h-7 rounded-full liquidGlass-wrapper flex items-center justify-center" style="color: var(--c-text-main);">
+                        <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+                    </div>
+                </div>
+            `;
+            gridContainer.appendChild(card);
+        });
+
+        lucide.createIcons();
+
+        function openModal(imgSrc) {
+            document.getElementById('modal-image').src = imgSrc;
+            document.getElementById('modal-lightbox').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modal-lightbox').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
